@@ -1,11 +1,12 @@
-# server.R for Bekera Resilience Factor
+# server.R for Resilience Ratio
 library(shiny)
 library(ggplot2)
-# This is a calculation for the Bekera resilience metric rho
+# This is a calculation for two different resilience profiles over
+# a performance threshold from 0 -> 1
 res1 <- function(Q.i.1, Q.r.1, Q.h.1, Q.i.2, Q.r.2, Q.h.2){
     
 }
-margin <- 1:1000/1000
+threshold <- 1:1000/1000
 shinyServer(function(input, output){
     output$Ratio.v.Threshold <- renderPlot({
         p <- ggplot(data.frame(x=c(0, 1.5)), aes(x)) +
