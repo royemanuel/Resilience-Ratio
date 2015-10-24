@@ -4,6 +4,18 @@ shinyUI(fluidPage(
     titlePanel("Resilience Ratio (Ayyub 2014)"),
     sidebarLayout(
         sidebarPanel(
+            sliderInput("t.i.1",
+                        "Disturbance Initiation Time 1",
+                        min=0, max=100,
+                        value=1.0, step=0.5),
+            sliderInput("t.r.1",
+                        "Recovery Length of Time 1",
+                        min=0, max=100,
+                        value=1.0, step=0.5),
+            sliderInput("t.h.1",
+                        "Time Horizon 1",
+                        min=0, max=100,
+                        value=1.0, step=0.5),
             sliderInput("Q.i.1",
                         "Performance Value of Profile 1 Prior to Disturbance",
                         min=0, max=1.5,
@@ -16,6 +28,18 @@ shinyUI(fluidPage(
                         "Performance Value of Profile 1 After Recovery",
                         min=0, max=1.5,
                         value=0.5, step=0.05),
+            sliderInput("t.i.2",
+                        "Disturbance Initiation Time 2",
+                        min=0, max=100,
+                        value=1.0, step=0.5),
+            sliderInput("t.r.2",
+                        "Recovery Length of Time 2",
+                        min=0, max=100,
+                        value=1.0, step=0.5),
+            sliderInput("t.h.2",
+                        "Time Horizon 2",
+                        min=0, max=100,
+                        value=1.0, step=0.5),
             sliderInput("Q.i.2",
                         "Performance Value of Profile 2 Prior to Disturbance",
                         min=0, max=1.5, value=1.0, step=0.05),
@@ -29,6 +53,8 @@ shinyUI(fluidPage(
                         value=0.5, step=0.05)
         ),
         mainPanel(
+            plotOutput("Res1"),
+            plotOutput("Res2"),
             plotOutput("Ratio.v.Threshold")
         )
     )
