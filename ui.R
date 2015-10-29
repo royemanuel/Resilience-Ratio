@@ -53,9 +53,7 @@ shinyUI(fluidPage(
             #            value=0.5, step=0.05)
         ),
         mainPanel(
-            plotOutput("Res1"),
-            plotOutput("Res2"),
-            plotOutput("Ratio.v.Threshold")
+            plotOutput("ResPlot")
         )
     )
 ))
