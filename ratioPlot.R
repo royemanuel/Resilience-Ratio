@@ -3,7 +3,8 @@ library("ggplot2")
 library("reshape2")
 resParams <- function(rec, ti, tr, th, thresh){
    frac <- rec / thresh[[1]]
-    frac <- sapply(frac, function(x) if (x > 1) 1 else x)
+   frac <- sapply(frac, function(x) if (x > 1) 1 else x)
+   print(frac)
     frac
 }
 # Find the resilience of a single profile
@@ -26,13 +27,28 @@ resrat <- function(rec1, rec2,
     colnames(Ratio) <- varVal
     rbind(Profile1, Profile2, Ratio)
 }
+## buildProf makes a data frame that contains the information for the
+## profiles so you can see what the performance profile looks like
+## At this point, the values for before disturbance and after are
+## hard coded into this
+buildProf <- function(rec, ti, tr, th){
+    Time <- c(0, ti, ti, ti+tr, ti+tr, ti+tr+th)
+    Performance <- c(1, 1, rec,rec,1, 1)
+    profPlot <- data.frame(Time, Performance)
+    colnames(profPlot) <- c("Time", "Performance")
+    profPlot
+}
 
 threshold <- data.frame((1:10)/10)
 colnames(threshold) <- "list"
-resilience <- resrat(1,.5,
+resilience <- resrat(0,.5,
             1, 1,
             1, 1,
             1, 1,
             threshold)
 q <- ggplot(resilience, aes(x=Threshold, y=Value, group=Profile))
 q <- q + geom_line(aes(color=Profile))
+
+perfProfile1 <- buildProf(.5, 1, 1, 1)
+m <- ggplot(perfProfile1, aes(Time, Performance))
+m <- m +geom_path() + ylim(0,2)

@@ -53,7 +53,9 @@ shinyUI(fluidPage(
             #            value=0.5, step=0.05)
         ),
         mainPanel(
-            plotOutput("ResPlot")
+            plotOutput("ResPlot"),
+            plotOutput("Profile1"),
+            plotOutput("Profile2")
         )
     )
 ))

@@ -1,7 +1,7 @@
 ## server.R for Resilience Ratio
 library(shiny)
 library(ggplot2)
-                                        #
+##
 ## This is a calculation for two different resilience profiles over
 ## a performance threshold from 0 -> 1
 
@@ -34,8 +34,26 @@ resrat <- function(rec1, rec2,
     rbind(Profile1, Profile2, Ratio)
 }
 
-threshold <- data.frame((1:10)/10)
+threshold <- data.frame((1:1000)/1000)
 colnames(threshold) <- "list"
+buildProf <- function(rec, ti, tr, th){
+    Time <- c(0, ti, ti, ti+tr, ti+tr, ti+tr+th)
+    Performance <- c(1, 1, rec,rec,1, 1)
+    profPlot <- data.frame(Time, Performance)
+    colnames(profPlot) <- c("Time", "Performance")
+    profPlot
+}
+
+axLim <- function(ti1, tr1, th1, ti2, tr2, th2){
+    timeProf1 <- ti1 + tr1 + th1
+    timeProf2 <- ti2 + tr2 + th2
+    if (timeProf1 > timeProf2){
+        timeProf1
+    } else {
+        timeProf2
+    }
+}
+
 
 shinyServer(function(input, output){
     output$ResPlot <- renderPlot({
@@ -45,7 +63,25 @@ shinyServer(function(input, output){
                              input$t.h.1, input$t.h.2,
                              threshold)
         q <- ggplot(resilience, aes(x=Threshold, y=Value, group=Profile))
-        q <- q + geom_line(aes(color=Profile))
+        q <- q + geom_line(aes(color=Profile)) + ylim(0, 1)
         print(q)
+    })
+    output$Profile1 <- renderPlot({
+        xAxis <- axLim(input$t.i.1, input$t.r.1, input$t.h.1,
+                       input$t.i.2, input$t.r.2, input$t.h.2)
+        profile1 <- buildProf(input$Q.r.1, input$t.i.1,
+                              input$t.r.1, input$t.h.1)
+        m <- ggplot(profile1, aes(Time, Performance))
+        m <- m +geom_path() + ylim(0, 1) + xlim(0, xAxis)
+        print(m)
+    })
+    output$Profile2 <- renderPlot({
+        xAxis <- axLim(input$t.i.1, input$t.r.1, input$t.h.1,
+                       input$t.i.2, input$t.r.2, input$t.h.2)
+        profile2 <- buildProf(input$Q.r.2, input$t.i.2,
+                              input$t.r.2, input$t.h.2)
+        p <- ggplot(profile2, aes(Time, Performance))
+        p <- p +geom_path()  + ylim(0, 1) + xlim(0, xAxis)
+        print(p)
     })
     })
