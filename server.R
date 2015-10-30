@@ -63,7 +63,8 @@ shinyServer(function(input, output){
                              input$t.h.1, input$t.h.2,
                              threshold)
         q <- ggplot(resilience, aes(x=Threshold, y=Value, group=Profile))
-        q <- q + geom_line(aes(color=Profile)) + ylim(0, 1)
+        q <- q + geom_line(aes(color=Profile))
+        q <- q + geom_vline(xintercept = input$Threshold)
         print(q)
     })
     output$Profile1 <- renderPlot({
@@ -72,7 +73,8 @@ shinyServer(function(input, output){
         profile1 <- buildProf(input$Q.r.1, input$t.i.1,
                               input$t.r.1, input$t.h.1)
         m <- ggplot(profile1, aes(Time, Performance))
-        m <- m +geom_path() + ylim(0, 1) + xlim(0, xAxis)
+        m <- m +geom_path(color="red") + ylim(0, 1) + xlim(0, xAxis)
+        m <- m + geom_hline(yintercept=input$Threshold)
         print(m)
     })
     output$Profile2 <- renderPlot({
@@ -81,7 +83,8 @@ shinyServer(function(input, output){
         profile2 <- buildProf(input$Q.r.2, input$t.i.2,
                               input$t.r.2, input$t.h.2)
         p <- ggplot(profile2, aes(Time, Performance))
-        p <- p +geom_path()  + ylim(0, 1) + xlim(0, xAxis)
+        p <- p +geom_path(color="green4")  + ylim(0, 1) + xlim(0, xAxis)
+        p <- p + geom_hline(yintercept=input$Threshold)
         print(p)
     })
     })
