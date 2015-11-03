@@ -4,11 +4,13 @@ shinyUI(fluidPage(
     titlePanel("Resilience Ratio (Ayyub 2014)"),
     sidebarLayout(
         sidebarPanel(
+            ## want to put a resilience value for the profile here
             sliderInput("Threshold",
                         "Threshold",
                         min=0, max=1,
                         value=0.9, step=0.05),
             h1("Profile 1"),
+            textOutput("prof1Res"),
             sliderInput("t.i.1",
                         "Disturbance Initiation Time",
                         min=0, max=100,
@@ -29,15 +31,17 @@ shinyUI(fluidPage(
                         "Performance Value During Recovery",
                         min=0, max=1.5,
                         value=.5, step=0.05),
-            h1("Profile 2"),
-            #sliderInput("Q.h.1",
-            #            "Performance Value of Profile 1 After Recovery",
-            #            min=0, max=1.5,
-            #            value=0.5, step=0.05),
+            sliderInput("Q.h.1",
+                        "Performance Value of Profile 1 After Recovery",
+                        min=0, max=1.5,
+                        value=0.5, step=0.05),
             sliderInput("t.i.2",
                         "Disturbance Initiation Time",
                         min=0, max=100,
                         value=1.0, step=0.5),
+            h1("Profile 2"),
+            textOutput("prof2Res"),
+            ## want to put a resilience value for the profile here
             sliderInput("t.r.2",
                         "Recovery Length of Time",
                         min=0, max=100,
@@ -52,11 +56,11 @@ shinyUI(fluidPage(
             sliderInput("Q.r.2",
                         "Performance Value During Recovery",
                         min=0, max=1.5,
-                        value=.1, step=0.05)
-            #sliderInput("Q.h.2",
-            #            "Performance Value of Profile 2 After Recovery",
-            #            min=0, max=1.5,
-            #            value=0.5, step=0.05)
+                        value=.1, step=0.05),
+            sliderInput("Q.h.2",
+                        "Performance Value of Profile 2 After Recovery",
+                        min=0, max=1.5,
+                        value=0.5, step=0.05)
         ),
         mainPanel(
             plotOutput("Profile1"),
