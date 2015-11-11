@@ -6,12 +6,8 @@ library("dplyr")
 resParams <- function(rec, hrz, ti, tr, th, thresh){
     frac <- data.frame(rec / thresh[[1]], hrz / thresh[[1]])
     colnames(frac) <- c("Rec", "Hrz")
-    print("this is first")
-    print(frac)
     frac[[1]] <- sapply(frac[[1]], function(x) if (x > 1) 1 else x)
     frac[[2]] <- sapply(frac[[2]], function(x) if (x > 1) 1 else x)
-    print("after sapply")
-    print(frac)
     frac
 }
 # Find the resilience of a single profile
@@ -46,16 +42,40 @@ buildProf <- function(rec, hrz, ti, tr, th){
     profPlot
 }
 
-threshold <- data.frame((1:10)/10)
+threshold <- data.frame((1:100)/100)
 colnames(threshold) <- "list"
-resilience <- resrat(.5, .5, 1, .75,
-            1, 1,
-            1, 1,
-            1, 1,
-            threshold)
+resilience <- resrat(.5, .1, ## After Failure Levels
+                     .75, 1, ## After Recovery Level
+                     1, 1,   ## Time of failure
+                     1, .5,   ## Time duration of recovery
+                     3, 3.5,   ## Time after recovery until planning horizon
+                     threshold)
 q <- ggplot(resilience, aes(x=Threshold, y=Value, group=Profile))
-q <- q + geom_line(aes(color=Profile))
+q <- q + geom_line(aes(linetype=Profile)) + theme_bw()
 
-perfProfile1 <- buildProf(.5, .75, 1, 1, 1)
+
+
+perfProfile1 <- buildProf(.5, .75, 1, 1, 3)
 m <- ggplot(perfProfile1, aes(Time, Performance))
 m <- m +geom_path() + ylim(0,2)
+
+perfProfile2 <- buildProf(.1, 1, 1, .5, 3.5)
+m <- ggplot(perfProfile1, aes(Time, Performance))
+m <- m +geom_path() + ylim(0,2)
+
+
+
+tidyProfiles <- function(profileList){
+    tdy <- c()
+    for (i in 1:length(profileList)){
+        tdy <- rbind(tdy, cbind(paste(i), profileList[[i]]))
+    }
+    colnames(tdy) <-  c("Profile", "Time", "Performance")
+    tdy
+}
+
+prof <- list(perfProfile1, perfProfile2)
+tdProf <- tidyProfiles(prof)
+
+n <- ggplot(tdProf, aes(x=Time, y=Performance, group=Profile))
+n <- n + geom_line(aes(linetype=Profile)) + theme_bw()

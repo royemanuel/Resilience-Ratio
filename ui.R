@@ -8,7 +8,7 @@ shinyUI(fluidPage(
             sliderInput("Threshold",
                         "Threshold",
                         min=0, max=1,
-                        value=0.9, step=0.05),
+                        value=0.9, step=0.01),
             h1("Profile 1"),
             textOutput("prof1Res"),
             sliderInput("t.i.1",
