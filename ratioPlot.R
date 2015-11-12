@@ -28,7 +28,7 @@ resrat <- function(rec1, rec2, hrz1, hrz2,
     colnames(Profile1) <- varVal
     colnames(Profile2) <- varVal
     colnames(Ratio) <- varVal
-    rbind(Profile1, Profile2, Ratio)
+    rbind(Profile1, Profile2) ##, Ratio) Removing the Ratio form the plot
 }
 ## buildProf makes a data frame that contains the information for the
 ## profiles so you can see what the performance profile looks like
